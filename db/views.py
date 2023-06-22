@@ -15,11 +15,22 @@ def Details(request,id,name,gender,age,isActive):
         "Name": name,
         "Gender": gender,
         "Age":age,
-        "isActive": isActive
-    }
+        "isActive": isActive    }
     res=collection.insert_one(details)
+    query = {"_id":id}
+    result = collection.find_one(query)
+    response_data = {
+        "Message":"Data Inserted Succesfully",
+        "InsertedData":result
+    }
+    return JsonResponse(response_data,safe=False)
 
-    return HttpResponse("data inserted sucessfully")
+def Get_all(request):
+    result = collection.find()
+    data = []
+    for cur in result:
+        data.append(cur)
+    return JsonResponse(data,safe=False)
 
 
 def Get_by_id(request, id):
